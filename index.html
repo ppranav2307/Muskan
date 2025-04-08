@@ -1,0 +1,227 @@
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Ek Ladki Bheegi Bhagi si</title>
+      <link rel="stylesheet" href="./style.css" />
+      <style>
+        /* Add these new styles */
+        .lyrics-visualizer {
+          position: fixed;
+          bottom: 20%;
+          left: 0;
+          right: 0;
+          text-align: center;
+          font-size: 2.5em;
+          color: white;
+          text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          z-index: 1000;
+          pointer-events: none;
+        }
+
+        .lyric-line {
+          opacity: 0;
+          transform: translateY(50px);
+          transition: all 0.5s ease;
+          position: absolute;
+          width: 100%;
+          padding: 10px 20px;
+        }
+
+        .lyric-line.active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @keyframes glow {
+          0% {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+          }
+          50% {
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+          }
+          100% {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+          }
+        }
+
+        .highlight {
+          animation: glow 2s infinite;
+        }
+      </style>
+    </head>
+    <body>
+      <!-- <a href="https://ibb.co/7dctxBy8"><img src="https://i.ibb.co/VcyY0bBr/489728892-956705106631650-6604971808773009749-n.jpg" alt="489728892-956705106631650-6604971808773009749-n" border="0"></a>
+
+  <a href="https://ibb.co/wZZ73rvr"><img src="https://i.ibb.co/bjjFqRfR/462568174-585454580656045-5867394972350584066-n.jpg" alt="462568174-585454580656045-5867394972350584066-n" border="0"></a>
+
+  <a href="https://ibb.co/GQ27YNxS"><img src="https://i.ibb.co/s9wjxzmY/IMG-20250408-223302-109.jpg" alt="IMG-20250408-223302-109" border="0"></a>
+
+  <a href="https://ibb.co/Y9rhw1P"><img src="https://i.ibb.co/KZ1WSfb/IMG-20250408-223404-200.jpg" alt="IMG-20250408-223404-200" border="0"></a>
+
+  <a href="https://ibb.co/Gz2GYWs"><img src="https://i.ibb.co/KTqB42N/xoxo-muskiii00-20250408-0001-jpg-1.webp" alt="xoxo-muskiii00-20250408-0001-jpg-1" border="0"></a> 
+
+  <a href="https://ibb.co/YThdCJj7"><img src="https://i.ibb.co/5xLj0CcW/488265614-9755878287807043-8260344763457700480-n.jpg" alt="488265614-9755878287807043-8260344763457700480-n" border="0"></a>
+
+  <a href="https://ibb.co/hxn5Tknm"><img src="https://i.ibb.co/ZRwsb3wM/IMG-20250408-223249-415.jpg" alt="IMG-20250408-223249-415" border="0"></a>
+  -->
+      <!-- partial:index.partial.html -->
+      <div id="drag-container">
+        <div id="spin-container">
+          <img
+            src="https://i.ibb.co/VcyY0bBr/489728892-956705106631650-6604971808773009749-n.jpg"
+            alt="IMAGE-1"
+            border="0"
+          />
+          <img
+            src="https://i.ibb.co/bjjFqRfR/462568174-585454580656045-5867394972350584066-n.jpg"
+            alt="IMAGE-1"
+            border="0"
+          />
+          <img
+            src="https://i.ibb.co/KZ1WSfb/IMG-20250408-223404-200.jpg"
+            alt="IMAGE-2"
+            border="0"
+          />
+          <img
+            src="https://i.ibb.co/s9wjxzmY/IMG-20250408-223302-109.jpg"
+            alt="IMAGE-2"
+            border="0"
+          />
+          <img
+            src="https://i.ibb.co/KTqB42N/xoxo-muskiii00-20250408-0001-jpg-1.webp"
+            alt="IMAGE-3"
+            border="0"
+          />
+          <img
+            src="https://i.ibb.co/5xLj0CcW/488265614-9755878287807043-8260344763457700480-n.jpg"
+            alt="IMAGE-4"
+            border="0"
+          />
+          <img
+            src="https://i.ibb.co/ZRwsb3wM/IMG-20250408-223249-415.jpg" alt="IMG-20250408-223249-415"
+            alt="IMAGE-5"
+            border="0"
+          />
+          <!-- Text at center of ground -->
+          <p>It's for <mark>MUSKAN YADAV</mark></p>
+        </div>
+        <div id="ground"></div>
+      </div>
+
+      <div id="music-container"></div>
+      <div class="lyrics-visualizer" id="lyrics-container"></div>
+
+      <div id="music-container"></div>
+
+      <script src="./script.js"></script>
+      <script>
+        // Add lyrics data (timing in seconds)
+        const lyrics = [
+          { time: 1.6, text: "Ek Ladki Bheegi Bhagi Si" },
+          { time: 4, text: "Soti Raaton Mei Jaagi Si" },
+          { time: 7.5, text: "Mili Ek Ajnabi Se" },
+          { time: 9.5, text: "Koi Aage Na Peeche " },
+          { time: 12, text: "Tum Hi Kaho Ye Koi Baat Hai. HMMMMM...." },
+          // Add more lyrics with proper timing
+        ];
+
+        // Audio setup
+        const audio = new Audio("music/EK LADKI BHEEGI BHAGI SI.mp3");
+        audio.loop = true;
+
+        // Create lyric elements
+        const lyricsContainer = document.getElementById("lyrics-container");
+        lyrics.forEach((lyric) => {
+          const div = document.createElement("div");
+          div.className = "lyric-line";
+          div.innerHTML = lyric.text.replace(
+            /Hadd Se Jyada/,
+            '<span class="highlight">Hadd Se Jyada</span>'
+          );
+          lyricsContainer.appendChild(div);
+        });
+
+        // Audio time update handler
+        const lyricElements = document.querySelectorAll(".lyric-line");
+        let currentLyric = 0;
+
+        audio.addEventListener("timeupdate", () => {
+          const currentTime = audio.currentTime;
+
+          // Check if we need to move to next lyric
+          if (
+            currentLyric < lyrics.length - 1 &&
+            currentTime >= lyrics[currentLyric + 1].time
+          ) {
+            lyricElements[currentLyric].classList.remove("active");
+            currentLyric++;
+            lyricElements[currentLyric].classList.add("active");
+          }
+
+          // Check if we need to move to previous lyric
+          if (currentLyric > 0 && currentTime < lyrics[currentLyric].time) {
+            lyricElements[currentLyric].classList.remove("active");
+            currentLyric--;
+            lyricElements[currentLyric].classList.add("active");
+          }
+        });
+
+        // Play/pause on click
+        document.body.addEventListener("click", () => {
+          if (audio.paused) {
+            audio.play();
+            lyricElements[0].classList.add("active");
+          } else {
+            audio.pause();
+          }
+        });
+
+        // Initialize audio
+        document.addEventListener("DOMContentLoaded", () => {
+          audio.play().catch((error) => {
+            console.log("Autoplay blocked - click anywhere to start");
+          });
+        });
+
+        // Reset lyrics when song ends
+        audio.addEventListener("ended", () => {
+          currentLyric = 0;
+          lyricElements.forEach((el) => el.classList.remove("active"));
+          lyricElements[0].classList.add("active");
+          audio.currentTime = 0;
+          audio.play();
+        });
+      </script>
+
+      <style>
+        .github-corner:hover .octo-arm {
+          animation: octocat-wave 560ms ease-in-out;
+        }
+        @keyframes octocat-wave {
+          0%,
+          100% {
+            transform: rotate(0);
+          }
+          20%,
+          60% {
+            transform: rotate(-25deg);
+          }
+          40%,
+          80% {
+            transform: rotate(10deg);
+          }
+        }
+        @media (max-width: 500px) {
+          .github-corner:hover .octo-arm {
+            animation: none;
+          }
+          .github-corner .octo-arm {
+            animation: octocat-wave 560ms ease-in-out;
+          }
+        }
+      </style>
+      <!-- partial -->
+      <script src="./script.js"></script>
+    </body>
+  </html>
